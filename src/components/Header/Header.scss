@@ -1,28 +1,14 @@
 @import 'base-styles/_variables.scss';
 
 .header-container {
-    background-color: $dark-yellow;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1vh solid $darkest;
-    padding: 2vh 2vw;
+  background-color: $dark-yellow;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1vh solid $darkest;
+  padding: 2vh 2vw;
 
-    h1 {
-        color: $darkest;
-        margin-bottom: 0;
-    }
-}
-
-.small-horizontal-button {
-    font: {
-        size: 1.5vw;
-        weight: $regular;
-      }
-    min-width: 5vw;
-    padding: 0.7vh 0.7vw;
-    text-align: center;
-    background-color: $dark;
-    color: $white;
-    border: 2px solid $white;
-    border-radius: 0.7vh;
+  h1 {
+    color: $darkest;
+    margin-bottom: 0;
   }
+}

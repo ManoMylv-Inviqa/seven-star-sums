@@ -1,0 +1,52 @@
+// TYPOGRAPHY
+
+h1 {
+  font: {
+    size: 3.8vw;
+    weight: $bold;
+  }
+  margin: 0 0 2vh;
+}
+
+%h2,
+h2 {
+  font: {
+    size: 3vw;
+    weight: $bold;
+  }
+  margin: 0 0 2vh;
+}
+
+%h3,
+h3 {
+  font: {
+    size: 2.4vw;
+    weight: $bold;
+  }
+  margin: 0 0 1vh;
+}
+
+%h4,
+h4 {
+  font: {
+    size: 1.9vw;
+    weight: $bold;
+  }
+  margin: 0 0 1vh;
+}
+
+%p,
+p {
+  font: {
+    size: 1.5vw;
+    weight: $regular;
+  }
+}
+
+.white-text {
+  color: $white;
+}
+
+.lightest-text {
+  color: $lightest;
+}
