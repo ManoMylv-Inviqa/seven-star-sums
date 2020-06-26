@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../_atoms/Button/Button';
+import Button from '../../UI/atoms/Button/Button';
 import withAnimation from '../../HOCs/withAnimation/withAnimation';
 import { AppState } from '../../types/types';
 import '../Answers/Answers.css';

@@ -1,33 +1,37 @@
 @import 'base-styles/_variables.scss';
 
 .score-strip {
-    background-color: $darkest;
+  background-color: $darkest;
 }
 
 .score-container {
-    justify-content: space-around;
-    align-items: center;
-    width: 90%;
-    margin: 0 auto;
+  justify-content: flex-start;
+  align-items: center;
+  width: 90%;
+  margin: 0 auto;
 
-    .star > svg {
-        margin-right: 1vw;
-        width: 7vw;
-        height: 7vw;
-        max-width: 70px;
-        max-height: 70px;
-    }
+  .icon-container {
+    margin-left: 4.5vw;
+  }
 
-    .heart > svg {
-        margin-right: .5vw;
-        width: 3vw;
-        height: 3vw;
-        max-width: 30px;
-        max-height: 30px;
-    }
+  .star > svg {
+    margin-right: 1vw;
+    width: 7vw;
+    height: 7vw;
+    max-width: 70px;
+    max-height: 70px;
+  }
 
-    &.no-top-padding {
-        padding-top: 1rem;
-        border-top: 1px solid $lightest; 
-    }
+  .heart > svg {
+    margin-right: 0.5vw;
+    width: 3vw;
+    height: 3vw;
+    max-width: 30px;
+    max-height: 30px;
+  }
+
+  &.no-top-padding {
+    padding-top: 1rem;
+    border-top: 1px solid $lightest;
+  }
 }

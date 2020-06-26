@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from '../../_atoms/Button/Button';
+import Button from '../../../UI/atoms/Button/Button';
 
 interface AnswerProps extends React.HTMLAttributes<HTMLButtonElement> {
   value: number;

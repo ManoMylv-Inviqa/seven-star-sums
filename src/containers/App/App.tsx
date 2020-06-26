@@ -6,13 +6,14 @@ import Answers from '../../components/Answers/Answers';
 import Check from '../../components/Check/Check';
 import Result from '../../components/Result/Result';
 import Score from '../../components/Score/Score';
+import SettingsSheet from '../../components/SettingsSheet/SettingsSheet';
 import Splashscreen from '../../components/Splashscreen/Splashscreen';
-import { AppState, AnswerMethodsObj } from '../../types/types';
+import { AppState, AnswerMethodsObj, SettingsPayload } from '../../types/types';
 
 class App extends Component<{}, AppState> {
   state: AppState = {
-    showSplash: true,
-    gameStatus: 'startGame', // Possible values: 'startGame', 'showSum', 'confirmAnswer', 'showResult', 'endWin', 'endLose'
+    showSplash: false,
+    gameStatus: 'showSettings',
     possibleNums: [],
     baseNum: 20,
     num1: null,
@@ -23,8 +24,8 @@ class App extends Component<{}, AppState> {
     correctAns: null,
     gotItRight: null,
     score: 0,
-    totalLives: 0,
-    livesLeft: 0
+    totalLives: 7,
+    livesLeft: 7
   };
 
   // Method to create a random number. Will be used throughout app
@@ -47,12 +48,15 @@ class App extends Component<{}, AppState> {
     // Define how to get answers based on the operator
     // @todo add other methods when needed
     const answerMethod: AnswerMethodsObj = {
-      '+': (a, b) => a - b
+      '+': (a, b) => a - b,
+      x: (a, b) => a * b
     };
     // Define correct answer, and two other possibles
     const answer1 = answerMethod[op1](baseNum, randomNum);
     let answer2 = answer1 + (this.getRandomNumber(3) + 1);
-    answer2 = answer2 > baseNum ? baseNum : answer2; // Don't allow random answer to be higher than the baseNum
+    if (op1 === '+') {
+      answer2 = answer2 > baseNum ? baseNum : answer2; // Don't allow random answer to be higher than the baseNum
+    }
     let answer3 = answer1 - (this.getRandomNumber(3) + 1);
     answer3 = answer3 < 0 ? 0 : answer3; // Don't allow random answer to be negative
     // Put the possible answers into an array, ready to be shuffled
@@ -84,19 +88,18 @@ class App extends Component<{}, AppState> {
   // Runs once at the beginning of the game, then calls the defineSum method as a callback
   definePossibleNums = (): void => {
     // Destructure the relevant state elements
-    const { possibleNums, baseNum } = this.state;
+    const { possibleNums, baseNum, op1 } = this.state;
     // Create and empty array, fill it with numbers from 1 to (baseNum -1),
     // this defines the possible numbers to be used in the left hand side of the sum
     const newNums: number[] = [];
-    for (let i = 1; i < baseNum; i++) {
+    const numLimit = op1 === '+' ? baseNum : 13;
+    for (let i = 1; i < numLimit; i++) {
       newNums.push(i);
     }
 
     this.setState(
       {
-        possibleNums: [...possibleNums].concat(newNums),
-        totalLives: baseNum - 8,
-        livesLeft: baseNum - 8
+        possibleNums: [...possibleNums].concat(newNums)
       },
       () => {
         this.defineSum();
@@ -118,7 +121,8 @@ class App extends Component<{}, AppState> {
     this.setState(
       {
         possibleNums: [],
-        score: 0
+        score: 0,
+        gotItRight: null
       },
       () => {
         this.startGameHandler();
@@ -195,6 +199,26 @@ class App extends Component<{}, AppState> {
     }, 800);
   };
 
+  showSettingsHandler = (): void => {
+    this.setState({
+      gameStatus: 'showSettings'
+    });
+  };
+
+  settingsHandler = (payload: SettingsPayload): void => {
+    this.setState(
+      {
+        baseNum: payload.baseNum,
+        op1: payload.operator,
+        totalLives: payload.difficulty,
+        livesLeft: payload.difficulty
+      },
+      () => {
+        this.resetGameHandler();
+      }
+    );
+  };
+
   // React render method here
   render(): JSX.Element {
     const {
@@ -217,20 +241,27 @@ class App extends Component<{}, AppState> {
         {!!showSplash && (
           <Splashscreen startgame={this.startGameHandler} resetgame={this.resetGameHandler} status={gameStatus} />
         )}
-        <Header />
-        <Sum num1={num1} num2={num2} baseNum={baseNum} op1={op1} op2={op2} rightWrong={gotItRight} />
-        <div className="answer-strip">
-          <Answers answers={possibleAns} clicked={this.answerClickHandler} gameStatus={gameStatus} />
-          <Check yesClicked={this.yesCheckHandler} noClicked={this.noCheckHandler} gameStatus={gameStatus} />
-          <Result
-            nextQ={this.nextQuestionHandler}
-            rightWrong={gotItRight}
-            score={score}
-            correctAns={correctAns}
-            gameStatus={gameStatus}
-          />
+        <Header gameStatus={gameStatus} showSettings={this.showSettingsHandler} />
+        <div className="stage">
+          {gameStatus === 'showSettings' && <SettingsSheet handleSettings={this.settingsHandler} />}
+          {gameStatus !== 'showSettings' && (
+            <div className="game__sheet">
+              <Sum num1={num1} num2={num2} baseNum={baseNum} op1={op1} op2={op2} rightWrong={gotItRight} />
+              <div className="answer-strip">
+                <Answers answers={possibleAns} clicked={this.answerClickHandler} gameStatus={gameStatus} />
+                <Check yesClicked={this.yesCheckHandler} noClicked={this.noCheckHandler} gameStatus={gameStatus} />
+                <Result
+                  nextQ={this.nextQuestionHandler}
+                  rightWrong={gotItRight}
+                  score={score}
+                  correctAns={correctAns}
+                  gameStatus={gameStatus}
+                />
+              </div>
+              <Score displayScore={score} totalLives={totalLives} livesLeft={livesLeft} />
+            </div>
+          )}
         </div>
-        <Score displayScore={score} totalLives={totalLives} livesLeft={livesLeft} />
       </div>
     );
   }

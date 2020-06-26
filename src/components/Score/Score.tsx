@@ -1,6 +1,6 @@
 import React from 'react';
-import Star from '../Icons/Star';
-import Heart from '../Icons/Heart';
+import Star from '../../UI/atoms/Icons/Star';
+import Heart from '../../UI/atoms/Icons/Heart';
 import './Score.css';
 import { AppState } from '../../types/types';
 
@@ -33,11 +33,11 @@ const Score: React.FC<ScoreProps> = ({ displayScore, totalLives, livesLeft }) =>
         <div>
           <h4 className="white-text">Your score is:</h4>
         </div>
-        <div>{stars}</div>
+        <div className="icon-container">{stars}</div>
       </div>
       <div className="container score-container no-top-padding">
         <h4 className="lightest-text">{`You have ${livesLeft} lives left.`}</h4>
-        <div>{hearts}</div>
+        <div className="icon-container">{hearts}</div>
       </div>
     </div>
   );

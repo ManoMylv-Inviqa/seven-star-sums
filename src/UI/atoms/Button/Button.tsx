@@ -5,9 +5,10 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   type: 'button' | 'submit' | 'reset';
   handler(): void;
   modifiers?: string | string[];
+  buttonId?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, type, handler, modifiers }) => {
+const Button: React.FC<ButtonProps> = ({ children, type, handler, modifiers, buttonId }) => {
   let CSSclass = '';
   if (typeof modifiers === 'string') {
     CSSclass = `btn btn--${modifiers}`;
@@ -18,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({ children, type, handler, modifiers }) =
   }
 
   return (
-    <button type={type} className={CSSclass} onClick={handler}>
+    <button key={buttonId} type={type} className={CSSclass} onClick={handler}>
       {children}
     </button>
   );
