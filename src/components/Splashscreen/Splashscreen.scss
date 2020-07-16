@@ -1,22 +1,22 @@
-@import 'base-styles/_variables.scss';
+@import '../../UI/base-styles/_variables.scss';
 
 .screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: $level3;
-    background-color: rgba($color: $black, $alpha: .8);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: $level3;
+  background-color: rgba($color: $black, $alpha: 0.8);
 }
 
 .splash {
-    width: 40vw;
-    max-width: 800px;
-    margin: 3vh auto;
-    padding: 3vh 3vw;
-    background-color: $light;
-    text-align: center;
-    border: 10px solid $dark;
-    border-radius: 1vh;
+  width: 40vw;
+  max-width: 800px;
+  margin: 3vh auto;
+  padding: 3vh 3vw;
+  background-color: $light;
+  text-align: center;
+  border: 10px solid $dark;
+  border-radius: 1vh;
 }

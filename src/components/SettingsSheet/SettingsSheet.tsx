@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
 import Button from '../../UI/atoms/Button/Button';
 import './SettingsSheet.css';
-import { SettingsPayload, GenericFunc } from '../../types/types';
+import { GenericFunc, OptionsMap, SumState } from '../../types/types';
+import { useStatus } from '../../context/StatusContext';
+import { useSum } from '../../context/SumContext';
+import { useScore } from '../../context/ScoreContext';
 
-interface SettingsSheetProps {
-  handleSettings(payload: SettingsPayload): void;
-}
-
-const SettingsSheet: React.FC<SettingsSheetProps> = ({ handleSettings }) => {
+const SettingsSheet: React.FC = () => {
+  const { setGameStatus } = useStatus();
+  const { setBaseNum, setOp1 } = useSum();
+  const { setTotalLives } = useScore();
   const [settingStatus, setSettingStatus] = useState(1);
-  const [operator, setOperator] = useState('+' as SettingsPayload['operator']);
-  const [baseNum, setBaseNum] = useState(2);
+  const [operator, setOperator] = useState('+' as SumState['op1']);
+  const [panelBaseNum, setPanelBaseNum] = useState(2);
   const [difficulty, setDifficulty] = useState(7);
 
   // PANEL HANDLERS START
-  const panel1Handler = (chosenOperator: SettingsPayload['operator']): void => {
+  const panel1Handler: GenericFunc<SumState['op1']> = (chosenOperator) => {
     setSettingStatus(2);
-    setOperator(chosenOperator);
+    setOperator(chosenOperator as SumState['op1']);
   };
 
-  const panel2Handler = (chosenBaseNum: number): void => {
+  const panel2Handler: GenericFunc<number> = (chosenBaseNum) => {
     setSettingStatus(3);
-    setBaseNum(chosenBaseNum);
+    setPanelBaseNum(chosenBaseNum);
   };
 
-  const panel3Handler = (lives: number): void => {
+  const panel3Handler: GenericFunc<number> = (lives) => {
     setSettingStatus(4);
     setDifficulty(lives);
   };
@@ -60,15 +62,15 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ handleSettings }) => {
 
   // CREATE BUTTON MAPS
   const buttonMap = (
-    options: any[],
+    options: OptionsMap<string | number | SumState['op1']>,
     stateCheck: string | number,
     panelNum: number,
-    clickHandler: GenericFunc,
+    clickHandler: GenericFunc<SumState['op1'] & number>,
     buttonStyle: string[][],
     buttonText: number[] | string[]
   ): JSX.Element[] =>
     options.map(
-      (option, index): JSX.Element => {
+      (option: string | number | SumState['op1'], index: number): JSX.Element => {
         const [butMod, butModAct, butModInact] = buttonStyle;
         let buttonModifiers = butMod;
         if (settingStatus > panelNum) {
@@ -78,7 +80,7 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ handleSettings }) => {
           <Button
             key={`panel-${panelNum}-${option}`}
             type="button"
-            handler={() => clickHandler(option)}
+            handler={(): void => clickHandler(option as SumState['op1'] & number)}
             modifiers={buttonModifiers}
           >
             {buttonText[index]}
@@ -95,10 +97,17 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ handleSettings }) => {
     makeButtonStyles(horizButtons),
     operatorText
   );
-  const pairMap = buttonMap(pairOptions, baseNum, 2, panel2Handler, makeButtonStyles(smallRoundButtons), pairOptions);
+  const pairMap = buttonMap(
+    pairOptions,
+    panelBaseNum,
+    2,
+    panel2Handler,
+    makeButtonStyles(smallRoundButtons),
+    pairOptions
+  );
   const tableMap = buttonMap(
     tableOptions,
-    baseNum,
+    panelBaseNum,
     2,
     panel2Handler,
     makeButtonStyles(smallRoundButtons),
@@ -113,6 +122,13 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ handleSettings }) => {
     difficultyText
   );
 
+  const finalSettings = (finalBaseNum: number, finalOperator: SumState['op1'], finalDifficulty: number): void => {
+    setBaseNum(finalBaseNum);
+    setOp1(finalOperator);
+    setTotalLives(finalDifficulty);
+    setGameStatus('resetGame');
+  };
+
   return (
     <div className="settings__sheet">
       <div className="settings__panel settings__panel--1">
@@ -120,13 +136,12 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ handleSettings }) => {
         <div className="settings__button-container">{operatorMap}</div>
       </div>
       <div className={`settings__panel settings__panel--2 settings__panel--${panel2viz}`}>
-        {!!bonds && (
+        {bonds ? (
           <>
             <h3>Choose your bond number:</h3>
             <div className="settings__button-container settings__button-container--small">{pairMap}</div>
           </>
-        )}
-        {!bonds && (
+        ) : (
           <>
             <h3>Choose your times table:</h3>
             <div className="settings__button-container">{tableMap}</div>
@@ -140,7 +155,7 @@ const SettingsSheet: React.FC<SettingsSheetProps> = ({ handleSettings }) => {
       <div className={`settings__panel settings__panel--2 settings__panel--${panel4viz}`}>
         <Button
           type="button"
-          handler={(): void => handleSettings({ baseNum, operator, difficulty })}
+          handler={(): void => finalSettings(panelBaseNum, operator, difficulty)}
           modifiers={horizGreenButtons}
         >
           Start the sums!

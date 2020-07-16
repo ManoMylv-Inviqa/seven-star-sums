@@ -1,22 +1,27 @@
 import React from 'react';
 import Button from '../../UI/atoms/Button/Button';
 import './Splashscreen.css';
-import { AppState } from '../../types/types';
+import { useStatus } from '../../context/StatusContext';
 
-interface SplashscreenProps extends React.HTMLAttributes<HTMLDivElement> {
-  startgame(): void;
-  resetgame(): void;
-  status: AppState['gameStatus'];
-}
-
-const Splashscreen: React.FC<SplashscreenProps> = ({ startgame, resetgame, status }) => {
+const Splashscreen: React.FC = () => {
   let splash: JSX.Element = <div />;
   const modifiers = 'horizontal';
+  const { gameStatus, setGameStatus, setShowSplash } = useStatus();
 
-  switch (status) {
+  const startGameHandler = (): void => {
+    setGameStatus('startGame');
+    setShowSplash(false);
+  };
+
+  const resetGameHandler = (): void => {
+    setGameStatus('resetGame');
+    setShowSplash(false);
+  };
+
+  switch (gameStatus) {
     case 'startGame':
       splash = (
-        <Button type="button" handler={startgame} modifiers={modifiers}>
+        <Button type="button" handler={startGameHandler} modifiers={modifiers}>
           Start the sums!
         </Button>
       );
@@ -25,7 +30,7 @@ const Splashscreen: React.FC<SplashscreenProps> = ({ startgame, resetgame, statu
       splash = (
         <div>
           <h3>Well done! You&rsquo;ve got seven stars!</h3>
-          <Button type="button" handler={resetgame} modifiers={modifiers}>
+          <Button type="button" handler={resetGameHandler} modifiers={modifiers}>
             Play again!
           </Button>
         </div>
@@ -35,7 +40,7 @@ const Splashscreen: React.FC<SplashscreenProps> = ({ startgame, resetgame, statu
       splash = (
         <div>
           <h3>Unlucky! You&rsquo;ve run out lives...</h3>
-          <Button type="button" handler={resetgame} modifiers={modifiers}>
+          <Button type="button" handler={resetGameHandler} modifiers={modifiers}>
             Try again!
           </Button>
         </div>

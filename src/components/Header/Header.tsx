@@ -1,18 +1,14 @@
 import React from 'react';
-import SettingsButton from '../SettingsButton/SettingsButton';
+import SettingsButton from './SettingsButton/SettingsButton';
 import './Header.css';
-import { AppState } from '../../types/types';
+import { useStatus } from '../../context/StatusContext';
 
-interface HeaderProps {
-  gameStatus: AppState['gameStatus'];
-  showSettings(): void;
-}
-
-const Header: React.FC<HeaderProps> = ({ gameStatus, showSettings }) => {
+const Header: React.FC = () => {
+  const { gameStatus } = useStatus();
   return (
     <div className="container header-container">
       <h1>SEVEN STAR SUMS</h1>
-      {gameStatus !== 'showSettings' && <SettingsButton showSettings={showSettings} />}
+      {gameStatus !== 'showSettings' && <SettingsButton />}
     </div>
   );
 };

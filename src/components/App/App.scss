@@ -1,0 +1,17 @@
+@import '../../UI/base-styles/_variables.scss';
+@import '../../UI/base-styles/_typography.scss';
+
+.App {
+  width: 90%;
+  max-width: 1000px;
+  margin: 3vh auto;
+  background-color: $lightest;
+  border: 10px solid $light;
+  border-radius: 1vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 3vh 3vw;
+}
