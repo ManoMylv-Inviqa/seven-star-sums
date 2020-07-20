@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 export type GameStates =
   | 'startGame'
   | 'showSettings'
+  | 'defineNums'
   | 'defineSum'
   | 'resetGame'
   | 'showSum'
@@ -38,8 +39,10 @@ export type ScoreState = {
 export type StatusState = {
   gameStatus: GameStates;
   showSplash: boolean;
+  isLocalSettings: boolean;
   setGameStatus: StateSetter<StatusState['gameStatus']>;
   setShowSplash: StateSetter<StatusState['showSplash']>;
+  setIsLocalSettings: StateSetter<StatusState['isLocalSettings']>;
 };
 
 export type SumState = {
@@ -58,6 +61,12 @@ export type SumState = {
   setOp2: StateSetter<SumState['op2']>;
   setRightWrong: StateSetter<SumState['rightWrong']>;
 };
+
+export interface SettingsModel {
+  finalBaseNum: number;
+  finalOperator: SumState['op1'];
+  finalDifficulty: number;
+}
 
 // METHOD AND FUNCTION TYPES
 

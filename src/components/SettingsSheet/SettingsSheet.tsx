@@ -1,40 +1,69 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '../../UI/atoms/Button/Button';
 import './SettingsSheet.css';
 import { GenericFunc, OptionsMap, SumState } from '../../types/types';
 import { useStatus } from '../../context/StatusContext';
 import { useSum } from '../../context/SumContext';
 import { useScore } from '../../context/ScoreContext';
+import { getLocalSettings } from '../../helpers/helpers';
 
 const SettingsSheet: React.FC = () => {
-  const { setGameStatus } = useStatus();
+  const { isLocalSettings, setGameStatus } = useStatus();
   const { setBaseNum, setOp1 } = useSum();
   const { setTotalLives } = useScore();
   const [settingStatus, setSettingStatus] = useState(1);
   const [operator, setOperator] = useState('+' as SumState['op1']);
   const [panelBaseNum, setPanelBaseNum] = useState(2);
   const [difficulty, setDifficulty] = useState(7);
+  const [isResetOperator, setIsResetOperator] = useState(false);
+  const localSettings = getLocalSettings();
+
+  // IF SETTINGS HAVE ALREADY BEEN SET THEN SHOW ALL OPTIONS FROM START
+  useEffect(() => {
+    if (isLocalSettings && localSettings) {
+      setSettingStatus(4);
+      setOperator(localSettings.finalOperator);
+      setPanelBaseNum(localSettings.finalBaseNum);
+      setDifficulty(localSettings.finalDifficulty);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   // PANEL HANDLERS START
   const panel1Handler: GenericFunc<SumState['op1']> = (chosenOperator) => {
+    if (isLocalSettings) {
+      setPanelBaseNum(0);
+      setIsResetOperator(true);
+      setSettingStatus(4);
+      setOperator(chosenOperator as SumState['op1']);
+      return;
+    }
     setSettingStatus(2);
     setOperator(chosenOperator as SumState['op1']);
   };
 
   const panel2Handler: GenericFunc<number> = (chosenBaseNum) => {
-    setSettingStatus(3);
+    if (!isLocalSettings) {
+      setSettingStatus(3);
+    }
+    if (isResetOperator) {
+      setSettingStatus(5);
+    }
     setPanelBaseNum(chosenBaseNum);
   };
 
   const panel3Handler: GenericFunc<number> = (lives) => {
     setSettingStatus(4);
+    if (isResetOperator) {
+      setSettingStatus(5);
+    }
     setDifficulty(lives);
   };
 
   // PANEL VISIBILITY OPTIONS
   const panel2viz = settingStatus > 1 ? 'show' : 'hide';
-  const panel3viz = settingStatus > 2 ? 'show' : 'hide';
-  const panel4viz = settingStatus > 3 ? 'show' : 'hide';
+  const panel3viz = settingStatus > 2 || isResetOperator ? 'show' : 'hide';
+  const panel4viz = (settingStatus > 3 && !isResetOperator) || settingStatus > 4 ? 'show' : 'hide';
 
   // RENDERING LOGIC
   const bonds = operator === '+';
@@ -73,7 +102,7 @@ const SettingsSheet: React.FC = () => {
       (option: string | number | SumState['op1'], index: number): JSX.Element => {
         const [butMod, butModAct, butModInact] = buttonStyle;
         let buttonModifiers = butMod;
-        if (settingStatus > panelNum) {
+        if (settingStatus > panelNum && stateCheck) {
           buttonModifiers = option === stateCheck ? butModAct : butModInact;
         }
         return (
@@ -127,6 +156,8 @@ const SettingsSheet: React.FC = () => {
     setOp1(finalOperator);
     setTotalLives(finalDifficulty);
     setGameStatus('resetGame');
+    const allSettings = { finalBaseNum, finalOperator, finalDifficulty };
+    window.localStorage.setItem('sevenStarSettings', JSON.stringify(allSettings));
   };
 
   return (

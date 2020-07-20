@@ -18,7 +18,7 @@ const GameSheet: React.FC = () => {
   const { totalLives, setLivesLeft, setScore } = useScore();
 
   const resetGameStatus = gameStatus === 'resetGame';
-  const startGameStatus = gameStatus === 'startGame';
+  const defineNumsStatus = gameStatus === 'defineNums';
   const defineSumStatus = gameStatus === 'defineSum';
 
   useEffect(() => {
@@ -27,17 +27,17 @@ const GameSheet: React.FC = () => {
       setRightWrong(null);
       setScore(0);
       setLivesLeft(totalLives);
-      setGameStatus('startGame');
+      setGameStatus('defineNums');
     }
   }, [resetGameStatus, setPossibleNums, setRightWrong, setScore, setLivesLeft, totalLives, setGameStatus]);
 
   useEffect(() => {
-    if (startGameStatus) {
+    if (defineNumsStatus) {
       const newNums = definePossibleNums(baseNum, op1);
       setPossibleNums([...possibleNums].concat(newNums));
       setGameStatus('defineSum');
     }
-  }, [startGameStatus, setGameStatus, baseNum, op1, possibleNums, setPossibleNums]);
+  }, [defineNumsStatus, setGameStatus, baseNum, op1, possibleNums, setPossibleNums]);
 
   useEffect(() => {
     if (defineSumStatus) {

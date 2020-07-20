@@ -1,4 +1,4 @@
-import { SumState, AnswerMethodsObj, DefineSumResult } from '../types/types';
+import { SumState, SettingsModel, AnswerMethodsObj, DefineSumResult } from '../types/types';
 
 // fn retuns a random integer with a ceiling based on the number given
 export const getRandomNumber = (base: number): number => {
@@ -62,4 +62,12 @@ export const defineSum = (
   const possibleAns = [...answerSet].map((x) => answerArray[x]);
 
   return { randomNum, possibleAns, answer1 };
+};
+
+export const getLocalSettings = (): SettingsModel | null => {
+  const localSettings = window.localStorage.getItem('sevenStarSettings');
+  if (localSettings) {
+    return JSON.parse(localSettings);
+  }
+  return null;
 };
