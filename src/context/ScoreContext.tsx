@@ -8,31 +8,45 @@ const ScoreProvider = ({ children }: Props): JSX.Element => {
   const [totalLives, setTotalLives] = useState(7);
   const [livesLeft, setLivesLeft] = useState(7);
   const [score, setScore] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState([] as ScoreState['wrongAnswers']);
 
   const scoreState = useMemo(
     () => ({
       totalLives,
       livesLeft,
       score,
+      wrongAnswers,
       setTotalLives,
       setLivesLeft,
-      setScore
+      setScore,
+      setWrongAnswers
     }),
-    [totalLives, livesLeft, score]
+    [totalLives, livesLeft, score, wrongAnswers]
   );
   return <Provider value={scoreState}>{children}</Provider>;
 };
 
 const useScore = (): ScoreState => {
-  const { totalLives, livesLeft, score, setTotalLives, setLivesLeft, setScore } = useContext(ScoreContext);
+  const {
+    totalLives,
+    livesLeft,
+    score,
+    wrongAnswers,
+    setTotalLives,
+    setLivesLeft,
+    setScore,
+    setWrongAnswers
+  } = useContext(ScoreContext);
 
   if (
     totalLives === undefined ||
     livesLeft === undefined ||
     score === undefined ||
+    wrongAnswers === undefined ||
     setTotalLives === undefined ||
     setLivesLeft === undefined ||
-    setScore === undefined
+    setScore === undefined ||
+    setWrongAnswers === undefined
   ) {
     throw new Error('useScore must be used within a ScoreProvider');
   }
@@ -41,9 +55,11 @@ const useScore = (): ScoreState => {
     totalLives,
     livesLeft,
     score,
+    wrongAnswers,
     setTotalLives,
     setLivesLeft,
-    setScore
+    setScore,
+    setWrongAnswers
   };
 };
 

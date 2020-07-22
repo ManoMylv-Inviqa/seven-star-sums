@@ -25,8 +25,15 @@ const getRandomIndexSet = (setSize: number): Set<number> => {
 
 // fn returns an array of numbers in order based on the type of sum chosen in settings
 export const definePossibleNums = (baseNum: SumState['baseNum'], op1: SumState['op1']): number[] => {
-  const numLimit = op1 === '+' ? baseNum : 12;
+  const numLimit = op1 === '+' ? baseNum - 1 : 12;
   return getNumberRange(numLimit);
+};
+
+// Define how to get answers based on the operator
+// @todo add other methods when needed
+export const answerMethod: AnswerMethodsObj = {
+  '+': (a, b) => a - b,
+  x: (a, b) => a * b
 };
 
 // fn pulls out a random number from possible number, returns an array of randomised possible
@@ -39,12 +46,7 @@ export const defineSum = (
   // Choose a random number from the possible numbers array,
   // based on the length of the possible numbers array
   const randomNum = possibleNums[getRandomNumber(possibleNums.length)];
-  // Define how to get answers based on the operator
-  // @todo add other methods when needed
-  const answerMethod: AnswerMethodsObj = {
-    '+': (a, b) => a - b,
-    x: (a, b) => a * b
-  };
+
   // Define correct answer, and two incorrect other possibles, +/- up to 3 to the correct answer
   const answer1 = answerMethod[op1](baseNum, randomNum);
   let answer2 = answer1 + (getRandomNumber(3) + 1);

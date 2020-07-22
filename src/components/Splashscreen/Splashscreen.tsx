@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../../UI/atoms/Button/Button';
+import GameReview from './GameReview/GameReview';
 import './Splashscreen.css';
 import { useStatus } from '../../context/StatusContext';
 import { useSum } from '../../context/SumContext';
@@ -65,6 +66,7 @@ const Splashscreen: React.FC = () => {
           <Button type="button" handler={startSettingsHandler} modifiers={modifiers}>
             Change your settings
           </Button>
+          <GameReview />
         </>
       );
       break;
@@ -79,6 +81,7 @@ const Splashscreen: React.FC = () => {
           <Button type="button" handler={startSettingsHandler} modifiers={modifiers}>
             Change your settings
           </Button>
+          <GameReview />
         </>
       );
       break;

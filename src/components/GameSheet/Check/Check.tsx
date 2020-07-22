@@ -11,7 +11,7 @@ const Check: React.FC = (): JSX.Element => {
   const { setGameStatus } = useStatus();
   const { correctAns } = useAnswer();
   const { num2, setNum2, setRightWrong } = useSum();
-  const { setLivesLeft, setScore } = useScore();
+  const { wrongAnswers, setLivesLeft, setScore, setWrongAnswers } = useScore();
 
   const yesButtonHandler = (): void => {
     const correct = num2 === correctAns;
@@ -19,6 +19,13 @@ const Check: React.FC = (): JSX.Element => {
     setGameStatus('showResult');
     if (!correct) {
       setLivesLeft((prevLives) => prevLives - 1);
+      setWrongAnswers([
+        ...wrongAnswers,
+        {
+          correctAnswer: correctAns,
+          playerAnswer: num2
+        }
+      ]);
       return;
     }
     setScore((prevScore) => prevScore + 1);

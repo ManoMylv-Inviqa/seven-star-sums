@@ -1,0 +1,56 @@
+@import '../../../UI/base-styles/_variables.scss';
+
+.game-review {
+  margin-top: 3vh;
+  text-align: left;
+  background-color: $white;
+  padding: 1.5vw 2vw 1vw;
+  border: 1px solid $darkest;
+
+  h4 {
+    color: $darkest;
+  }
+
+  .star,
+  .heart {
+    vertical-align: top;
+    & > svg {
+      margin-right: 0.5vw;
+      width: 2vw;
+      height: 2vw;
+      max-width: 20px;
+      max-height: 20px;
+    }
+  }
+
+  p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  &__sum-container:not(:first-of-type) {
+    border-top: 1px dotted $darkest;
+  }
+
+  &__sum-container {
+    p:only-of-type {
+      margin: 0.5em 0;
+    }
+  }
+
+  &__sum {
+    font-size: 1.7vw;
+    font-weight: $bold;
+  }
+
+  &__answer {
+    font-weight: $bold;
+
+    &--wrong {
+      color: $red;
+    }
+
+    &--right {
+      color: $green;
+    }
+  }
+}
