@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../../UI/atoms/Button/Button';
 import GameReview from './GameReview/GameReview';
 import './Splashscreen.css';
+import { winText, loseText, getRandomText } from '../../helpers/textHelpers';
 import { useStatus } from '../../context/StatusContext';
 import { useSum } from '../../context/SumContext';
 import { useScore } from '../../context/ScoreContext';
@@ -58,7 +59,10 @@ const Splashscreen: React.FC = () => {
     case 'endWin':
       splash = (
         <>
-          <h3>Well done! You&rsquo;ve got seven stars!</h3>
+          <h3>
+            {getRandomText(winText)}
+            &nbsp;You&rsquo;ve got seven stars!
+          </h3>
           <Button type="button" handler={resetGameHandler} modifiers={modifiers}>
             Play again!
           </Button>
@@ -73,7 +77,10 @@ const Splashscreen: React.FC = () => {
     case 'endLose':
       splash = (
         <>
-          <h3>Unlucky! You&rsquo;ve run out lives...</h3>
+          <h3>
+            {getRandomText(loseText)}
+            &nbsp;You&rsquo;ve run out lives...
+          </h3>
           <Button type="button" handler={resetGameHandler} modifiers={modifiers}>
             Try again!
           </Button>

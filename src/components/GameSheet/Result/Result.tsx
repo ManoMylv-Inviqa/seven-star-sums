@@ -3,6 +3,7 @@ import Button from '../../../UI/atoms/Button/Button';
 import withAnimation from '../../../HOCs/withAnimation/withAnimation';
 import '../Answers/Answers.css';
 import './Result.css';
+import { correctText, wrongText, getRandomText } from '../../../helpers/textHelpers';
 import { useStatus } from '../../../context/StatusContext';
 import { useSum } from '../../../context/SumContext';
 import { useAnswer } from '../../../context/AnswerContext';
@@ -30,12 +31,13 @@ const Result: React.FC = () => {
   };
 
   const borderStyle = rightWrong ? 'green-border' : 'red-border';
+  const exclamation = rightWrong ? getRandomText(correctText) : getRandomText(wrongText);
   let starText = score === 1 && !endWin ? 'Have a star!' : 'Have another star!';
   if (endWin) {
     starText = 'You just got your seventh star, and won the game!';
   }
   const loseText = endLose
-    ? 'You just lost your last life... Game over.'
+    ? 'You just lost your last life... It\u2019s game over.'
     : 'You lose a life, but try again with another sum.';
   const modifiers = 'horizontal';
 
@@ -44,8 +46,8 @@ const Result: React.FC = () => {
       <div className="result-container">
         <h4 className="white-text">
           {rightWrong
-            ? `Yay, you got the sum right! ${starText}`
-            : `Unlucky! The correct answer was ${correctAns}. ${loseText}`}
+            ? `${exclamation} You got the sum right! ${starText}`
+            : `${exclamation} The correct answer was ${correctAns}. ${loseText}`}
         </h4>
       </div>
       {endWin || endLose ? (

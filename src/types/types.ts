@@ -93,3 +93,6 @@ export interface DefineSumResult {
   possibleAns: AnswerState['possibleAns'];
   answer1: AnswerState['correctAns'];
 }
+
+export type NumberSet<T> = (a: number, b: Function, c: T) => Set<number>;
+export type WrongAnswerArgs = [SumState['baseNum'], SumState['op1'], number];
