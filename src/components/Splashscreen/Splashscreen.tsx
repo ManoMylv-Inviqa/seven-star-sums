@@ -12,7 +12,7 @@ const Splashscreen: React.FC = () => {
   let splash: JSX.Element = <div />;
   const modifiers = 'horizontal';
   const { gameStatus, setGameStatus, setShowSplash } = useStatus();
-  const { setBaseNum, setOp1 } = useSum();
+  const { setSumType, setBaseNum, setOp1 } = useSum();
   const { setTotalLives, setLivesLeft } = useScore();
 
   const localSettings = getLocalSettings();
@@ -24,6 +24,7 @@ const Splashscreen: React.FC = () => {
 
   const startGameHandler = (): void => {
     if (localSettings) {
+      setSumType(localSettings.finalSumType);
       setBaseNum(localSettings.finalBaseNum);
       setOp1(localSettings.finalOperator);
       setTotalLives(localSettings.finalDifficulty);

@@ -15,7 +15,8 @@ export type GameStates =
   | 'endLose';
 
 type AnswerButton = number | '?';
-type Operator1 = '+' | 'x';
+type SumTypes = 'bonds' | 'tables';
+type Operator1 = '+' | '-' | 'x' | '÷';
 
 export type Props = { children: ReactNode };
 type StateSetter<T> = React.Dispatch<React.SetStateAction<T>>;
@@ -30,6 +31,7 @@ export type AnswerState = {
 interface WrongAnswer {
   correctAnswer: AnswerState['correctAns'];
   playerAnswer: AnswerButton;
+  completeSum: string;
 }
 
 export type ScoreState = {
@@ -53,26 +55,33 @@ export type StatusState = {
 };
 
 export type SumState = {
+  sumType: SumTypes;
   possibleNums: number[];
   num1: number | null;
   num2: AnswerButton;
   baseNum: number;
   op1: Operator1;
-  op2: string;
   rightWrong: boolean | null;
+  answerCheck: boolean;
+  isHard: boolean;
+  setSumType: StateSetter<SumState['sumType']>;
   setPossibleNums: StateSetter<SumState['possibleNums']>;
   setNum1: StateSetter<SumState['num1']>;
   setNum2: StateSetter<SumState['num2']>;
   setBaseNum: StateSetter<SumState['baseNum']>;
   setOp1: StateSetter<SumState['op1']>;
-  setOp2: StateSetter<SumState['op2']>;
   setRightWrong: StateSetter<SumState['rightWrong']>;
+  setAnswerCheck: StateSetter<SumState['answerCheck']>;
+  setIsHard: StateSetter<SumState['isHard']>;
 };
 
 export interface SettingsModel {
+  finalSumType: SumState['sumType'];
   finalBaseNum: number;
   finalOperator: SumState['op1'];
   finalDifficulty: number;
+  finalAnswerCheck: SumState['answerCheck'];
+  finalIsHard: SumState['isHard'];
 }
 
 // METHOD AND FUNCTION TYPES
@@ -95,4 +104,5 @@ export interface DefineSumResult {
 }
 
 export type NumberSet<T> = (a: number, b: Function, c: T) => Set<number>;
-export type WrongAnswerArgs = [SumState['baseNum'], SumState['op1'], number];
+export type WrongAnswerArgs = [SumState['baseNum'], SumState['sumType'], number];
+export type SumNumberOrder = Array<SumState['num1'] | SumState['num2'] | SumState['baseNum']>;

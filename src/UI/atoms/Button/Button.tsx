@@ -1,5 +1,6 @@
 import React from 'react';
 import './Button.css';
+import { getCssClasses } from '../../../helpers/helpers';
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   type: 'button' | 'submit' | 'reset';
@@ -9,14 +10,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({ children, type, handler, modifiers, buttonId }) => {
-  let CSSclass = '';
-  if (typeof modifiers === 'string') {
-    CSSclass = `btn btn--${modifiers}`;
-  }
-  if (typeof modifiers === 'object' && modifiers !== null) {
-    const expandedModifiers = modifiers.map((modifier) => `btn--${modifier}`).join(' ');
-    CSSclass = `btn ${expandedModifiers}`;
-  }
+  const CSSclass = getCssClasses('btn', modifiers);
 
   return (
     <button key={buttonId} type={type} className={CSSclass} onClick={handler}>

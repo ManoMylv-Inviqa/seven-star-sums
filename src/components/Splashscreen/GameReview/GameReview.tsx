@@ -3,12 +3,9 @@ import './GameReview.css';
 import Heart from '../../../UI/atoms/Icons/Heart';
 import Star from '../../../UI/atoms/Icons/Star';
 import { useScore } from '../../../context/ScoreContext';
-import { useSum } from '../../../context/SumContext';
-import { answerMethod } from '../../../helpers/helpers';
 
 const GameReview: React.FC = () => {
   const { totalLives, livesLeft, score, wrongAnswers } = useScore();
-  const { baseNum, op1 } = useSum();
 
   const lostLives = totalLives - livesLeft;
 
@@ -22,18 +19,10 @@ const GameReview: React.FC = () => {
 
   const wrongSums = didLoseLives
     ? wrongAnswers.map((obj) => {
-        const isAddition = op1 === '+';
-        const missingNum = isAddition
-          ? answerMethod[op1](baseNum, obj.correctAnswer as number)
-          : (obj.correctAnswer as number) / baseNum;
-        const sum = isAddition
-          ? `${missingNum} + ${obj.correctAnswer} = ${baseNum}`
-          : `${missingNum} x ${baseNum} = ${obj.correctAnswer}`;
-
         return (
           <div className="game-review__sum-container" key={`sum-${obj.correctAnswer}`}>
             <p>
-              <span className="game-review__sum">{sum}</span>
+              <span className="game-review__sum">{obj.completeSum}</span>
               &nbsp;&nbsp;&nbsp;You answered&nbsp;
               <span className="game-review__answer game-review__answer--wrong">{obj.playerAnswer}</span>
               ;&nbsp; the correct answer was&nbsp;

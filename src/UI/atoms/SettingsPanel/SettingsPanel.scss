@@ -1,0 +1,64 @@
+@import '../../base-styles/_variables.scss';
+
+.settings {
+  &__panel {
+    width: 100%;
+    text-align: center;
+    transition: opacity 0.8s ease-in;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $dark;
+      margin-bottom: 3vh;
+    }
+
+    &--hide {
+      opacity: 0;
+    }
+
+    &--show {
+      opacity: 1;
+    }
+
+    h3,
+    .settings__button-container {
+      animation: fadeIn 1s ease-in forwards;
+    }
+  }
+
+  &__button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 2vh auto;
+
+    &--last {
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    &--lge {
+      .btn--horizontal {
+        flex: 0 1 40%;
+      }
+    }
+
+    &--med {
+      .btn--horizontal {
+        flex: 0 1 28%;
+      }
+    }
+
+    &--sml {
+      width: 40%;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

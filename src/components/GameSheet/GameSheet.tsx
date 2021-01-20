@@ -13,7 +13,7 @@ import { definePossibleNums, defineSum } from '../../helpers/helpers';
 
 const GameSheet: React.FC = () => {
   const { gameStatus, setGameStatus } = useStatus();
-  const { baseNum, op1, possibleNums, setNum1, setNum2, setPossibleNums, setRightWrong } = useSum();
+  const { sumType, baseNum, op1, possibleNums, isHard, setNum1, setNum2, setPossibleNums, setRightWrong } = useSum();
   const { setPossibleAns, setCorrectAns } = useAnswer();
   const { totalLives, setLivesLeft, setScore, setWrongAnswers } = useScore();
 
@@ -43,15 +43,15 @@ const GameSheet: React.FC = () => {
 
   useEffect(() => {
     if (defineNumsStatus) {
-      const newNums = definePossibleNums(baseNum, op1);
+      const newNums = definePossibleNums(baseNum, sumType, isHard);
       setPossibleNums([...possibleNums].concat(newNums));
       setGameStatus('defineSum');
     }
-  }, [defineNumsStatus, setGameStatus, baseNum, op1, possibleNums, setPossibleNums]);
+  }, [defineNumsStatus, setGameStatus, baseNum, sumType, possibleNums, isHard, setPossibleNums]);
 
   useEffect(() => {
     if (defineSumStatus) {
-      const newSum = defineSum(possibleNums, baseNum, op1);
+      const newSum = defineSum(sumType, possibleNums, baseNum, op1);
       setNum1(newSum.randomNum);
       setNum2('?');
       setPossibleNums([...possibleNums].filter((val) => val !== newSum.randomNum));
@@ -62,6 +62,7 @@ const GameSheet: React.FC = () => {
   }, [
     defineSumStatus,
     setGameStatus,
+    sumType,
     baseNum,
     op1,
     possibleNums,
