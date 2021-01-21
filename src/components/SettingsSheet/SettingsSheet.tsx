@@ -27,7 +27,7 @@ const SettingsSheet: React.FC = () => {
   const [operator, setOperator] = useState('+' as LocalOperator);
   const [panelBaseNum, setPanelBaseNum] = useState(2);
   const [difficulty, setDifficulty] = useState(0);
-  const [checkAns, setCheckAns] = useState(false);
+  const [checkAns, setCheckAns] = useState(true);
   const [hardSums, setHardSums] = useState(false);
   const [isResetType, setIsResetType] = useState(false);
   const [isResetOperator, setIsResetOperator] = useState(false);
@@ -37,12 +37,24 @@ const SettingsSheet: React.FC = () => {
   useEffect(() => {
     if (isLocalSettings && localSettings) {
       setSettingStatus(4);
-      setOperator(localSettings.finalOperator as LocalOperator);
-      setPanelBaseNum(localSettings.finalBaseNum);
-      setDifficulty(localSettings.finalDifficulty);
-      setPanelSumType(localSettings.finalSumType);
-      setCheckAns(localSettings.finalAnswerCheck);
-      setHardSums(localSettings.finalIsHard);
+      if (localSettings.finalOperator) {
+        setOperator(localSettings.finalOperator as LocalOperator);
+      }
+      if (localSettings.finalBaseNum) {
+        setPanelBaseNum(localSettings.finalBaseNum);
+      }
+      if (localSettings.finalDifficulty) {
+        setDifficulty(localSettings.finalDifficulty);
+      }
+      if (localSettings.finalSumType) {
+        setPanelSumType(localSettings.finalSumType);
+      }
+      if (localSettings.finalAnswerCheck) {
+        setCheckAns(localSettings.finalAnswerCheck);
+      }
+      if (localSettings.finalIsHard) {
+        setHardSums(localSettings.finalIsHard);
+      }
     }
     // eslint-disable-next-line
   }, []);
